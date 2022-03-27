@@ -4,7 +4,7 @@ import {
     Circuit
 } from 'snarkyjs';
 
-export class Word {
+export default class Word {
     value: Field[];
     static charSize = 5;
 

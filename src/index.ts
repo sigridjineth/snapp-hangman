@@ -1,6 +1,6 @@
 import { shutdown } from 'snarkyjs';
 
-import { run } from './run';
+import run from './run';
 
 run();
 shutdown();
