@@ -1,4 +1,4 @@
-import { Field } from 'snarkyjs';
+import { Field, Circuit } from 'snarkyjs';
 
 // We use this class to represent strings
 // strings are represented as an array of characters
@@ -50,5 +50,16 @@ export class Word {
   static serialiseChars(word: Field[]) {
     const bits = word.map((x) => x.toBits(Word.charSize)).flat();
     return Field.ofBits(bits);
+  }
+
+  // returns an array of type bool indicating if element at index matches char
+  extractMatches(char: Field) {
+    return this.value.map((x) => x.equals(char));
+  }
+
+  // we use this method to update guessed word to reveal correctly guessed characters
+  updateWithMatches(word: Word, char: Field) {
+    const matches = word.extractMatches(char);
+    this.value = this.value.map((x, i) => Circuit.if(matches[i], char, x));
   }
 }
