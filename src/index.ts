@@ -1,26 +1,31 @@
-import { Field, SmartContract, state, State, method, UInt64 } from 'snarkyjs';
+import { Field } from 'snarkyjs';
 
-/**
- * Basic Example
- * See https://docs.minaprotocol.com/zkapps for more info.
- *
- * The Add contract initializes the state variable 'num' to be a Field(1) value by default when deployed.
- * When the 'update' method is called, the Add contract adds Field(2) to its 'num' contract state.
- */
-export default class Add extends SmartContract {
-  @state(Field) num = State<Field>();
+// We use this class to represent strings
+// strings are represented as an array of characters
+// Each character is encoded as a Field
+// Character mapping / supported characters:
+// a = 1
+// b = 2
+// ...
+// z = 26
+// _ = 27
+// We can represent all 27 characters with 5 bits (charSize)
+export class Word {
+  value: Field[];
+  static charSize = 5;
 
-  // initialization
-  deploy(initialBalance: UInt64, num: Field = Field(1)) {
-    super.deploy();
-    this.balance.addInPlace(initialBalance);
-    this.num.set(num);
-  }
-
-  @method async update() {
-    const currentState = await this.num.get();
-    const newState = currentState.add(2);
-    newState.assertEquals(currentState.add(2));
-    this.num.set(newState);
+  // construct word from serialized field
+  // we must know length to parse correct number of fields
+  constructor(serializedWord: Field, length: Field) {
+    const bits = serializedWord.toBits(Number(length.mul(Word.charSize)));
+    let value = [];
+    for (let i = 0; i < Number(length); i++) {
+      value.push(
+        Field.ofBits(
+          bits.slice(i * Word.charSize, i * Word.charSize + Word.charSize)
+        )
+      );
+    }
+    this.value = value;
   }
 }
