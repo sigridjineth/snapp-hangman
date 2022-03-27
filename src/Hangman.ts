@@ -12,6 +12,8 @@ import {
     Circuit
 } from 'snarkyjs';
 
+import { Word } from './index';
+
 export default class Hangman extends SmartContract {
     // we store the guessed word on chain and update as characters are correctly guessed
     @state(Field) guessedWord: State<Field>;
