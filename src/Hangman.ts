@@ -12,7 +12,7 @@ import {
     Circuit
 } from 'snarkyjs';
 
-import { Word } from './index';
+import { Word } from './Word';
 
 export default class Hangman extends SmartContract {
     // we store the guessed word on chain and update as characters are correctly guessed
