@@ -14,7 +14,7 @@ import {
 
 import { Word } from './Word';
 
-export default class Hangman extends SmartContract {
+export class Hangman extends SmartContract {
     // we store the guessed word on chain and update as characters are correctly guessed
     @state(Field) guessedWord: State<Field>;
     // we store prior guessed chracter on chain such that player 1 can check if exists in word
