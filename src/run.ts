@@ -10,10 +10,10 @@ import {
 } from 'snarkyjs';
 import readline from 'readline';
 
-import Word from './Word';
-import Hangman from './Hangman';
+import { Word } from './Word.js';
+import { Hangman } from './Hangman.js';
 
-export default async function run() {
+export async function run() {
   await isReady;
 
   const Local = Mina.LocalBlockchain();
