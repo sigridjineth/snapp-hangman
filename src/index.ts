@@ -72,4 +72,15 @@ export class Word {
   hasMatches(char: Field) {
     return this.extractMatches(char).reduce(Bool.or);
   }
+
+  // serialise to field
+  serialise() {
+    const bits = this.value.map((x) => x.toBits(Word.charSize)).flat();
+    return Field.ofBits(bits);
+  }
+
+  // convert to a string
+  toString() {
+    return this.value.map((x) => Word.fieldToChar(x)).join('');
+  }
 }
