@@ -28,4 +28,27 @@ export class Word {
     }
     this.value = value;
   }
+
+  // instatiate Word from string
+  static fromString(word: string): Word {
+    const chars = Array.from(word).map(Word.charToField);
+    return new Word(Word.serialiseChars(chars), new Field(word.length));
+  }
+
+  // encode character as Field
+  static charToField(char: string): Field {
+    // Convert to ascii and shift for compression
+    return new Field(char === '_' ? 27 : char.charCodeAt(0) - 96);
+  }
+
+  // decode character to Field
+  static fieldToChar(field: Field): string {
+    return Number(field) === 27 ? '_' : String.fromCharCode(Number(field) + 96);
+  }
+
+  // convert array of char fields to serialized word
+  static serialiseChars(word: Field[]) {
+    const bits = word.map((x) => x.toBits(Word.charSize)).flat();
+    return Field.ofBits(bits);
+  }
 }
