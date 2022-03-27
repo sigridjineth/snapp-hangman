@@ -1,4 +1,4 @@
-import { Field, Circuit } from 'snarkyjs';
+import { Field, Circuit, Bool } from 'snarkyjs';
 
 // We use this class to represent strings
 // strings are represented as an array of characters
@@ -61,5 +61,15 @@ export class Word {
   updateWithMatches(word: Word, char: Field) {
     const matches = word.extractMatches(char);
     this.value = this.value.map((x, i) => Circuit.if(matches[i], char, x));
+  }
+
+  // compare with another Word instance
+  equals(word: Word) {
+    return this.value.map((x, i) => x.equals(word.value[i])).reduce(Bool.and);
+  }
+
+  // does word contain char
+  hasMatches(char: Field) {
+    return this.extractMatches(char).reduce(Bool.or);
   }
 }
